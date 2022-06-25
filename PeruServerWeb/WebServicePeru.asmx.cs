@@ -39,5 +39,53 @@ namespace PeruServerWeb
 
             return list;
         }
+
+        [WebMethod]
+        public List<object[]> provincias(int iddepartamento)
+        {
+            List<object[]> list = new List<object[]>();
+
+            using (var db = new ModelPeru())
+            {
+                var query = (from pro in db.provincias
+                             where pro.iddepartamento == iddepartamento
+                             select new
+                             {
+                                 idprovincia = pro.idprovincia,
+                                 provincia = pro.provincia
+                             });
+
+                foreach (var fil in query)
+                {
+                    list.Add(new object[] { fil.idprovincia, fil.provincia });
+                }
+            }
+
+            return list;
+        }
+
+        [WebMethod]
+        public List<object[]> distritos(int idprovincia)
+        {
+            List<object[]> list = new List<object[]>();
+
+            using (var db = new ModelPeru())
+            {
+                var query = (from dis in db.distritos
+                             where dis.idprovincia == idprovincia
+                             select new
+                             {
+                                 iddistrito = dis.iddistrito,
+                                 distrito = dis.distrito
+                             });
+
+                foreach (var fil in query)
+                {
+                    list.Add(new object[] { fil.iddistrito, fil.distrito });
+                }
+            }
+
+            return list;
+        }
     }
 }
